@@ -1,0 +1,61 @@
+{{define "body"}}
+<div class="max-w-[840px]">
+  <h1 class="text-base font-medium mb-1">Token minted</h1>
+  <p class="text-sm text-ink-soft mb-5">
+    Save the token below. It will not be shown again. The one-shot install
+    command at the bottom is the fastest way to get this agent running on a
+    fresh box.
+  </p>
+
+  <section class="border border-line rounded-[2px] p-4 mb-4">
+    <div class="flex items-baseline justify-between mb-2">
+      <div class="text-xs text-ink-soft">Token</div>
+      <button type="button" class="icon-btn" data-copy="{{.Plaintext}}" aria-label="Copy token" title="Copy token"><i class="ti ti-copy"></i></button>
+    </div>
+    <code id="token-plaintext" class="keep-input-mono break-all text-sm">{{.Plaintext}}</code>
+  </section>
+
+  <section class="border border-line rounded-[2px] p-4 mb-4">
+    <div class="flex items-baseline justify-between mb-2">
+      <div class="text-xs text-ink-soft">One-shot install (run on the agent box)</div>
+      <button type="button" class="icon-btn" data-copy-target="#bootstrap-cmd" aria-label="Copy install command" title="Copy install command"><i class="ti ti-copy"></i></button>
+    </div>
+    <pre id="bootstrap-cmd" class="keep-input-mono text-xs whitespace-pre overflow-x-auto">{{.BootstrapCommand}}</pre>
+  </section>
+
+  <details class="border border-line rounded-[2px] p-4 mb-4">
+    <summary class="text-xs text-ink-soft hover:text-ink list-none flex items-center gap-1.5">
+      <i class="ti ti-chevron-down"></i><span>individual files</span>
+    </summary>
+
+    <div class="mt-4 mb-4">
+      <div class="flex items-baseline justify-between mb-2">
+        <div class="text-xs text-ink-soft">Agent script</div>
+        <div class="flex gap-1">
+          <a class="icon-btn" href="/projects/{{.Project.Slug}}/envs/{{.Env.Slug}}/tokens/{{.TokenID}}/script.sh" aria-label="Download" title="Download"><i class="ti ti-download"></i></a>
+          <button type="button" class="icon-btn" data-copy-target="#agent-script" aria-label="Copy script" title="Copy script"><i class="ti ti-copy"></i></button>
+        </div>
+      </div>
+      <pre id="agent-script" class="keep-input-mono text-xs whitespace-pre overflow-x-auto">{{.AgentScript}}</pre>
+    </div>
+
+    <div class="mb-4">
+      <div class="flex items-baseline justify-between mb-2">
+        <div class="text-xs text-ink-soft">systemd unit</div>
+        <button type="button" class="icon-btn" data-copy-target="#systemd-unit" aria-label="Copy unit" title="Copy unit"><i class="ti ti-copy"></i></button>
+      </div>
+      <pre id="systemd-unit" class="keep-input-mono text-xs whitespace-pre overflow-x-auto">{{.SystemdUnit}}</pre>
+    </div>
+
+    <div>
+      <div class="flex items-baseline justify-between mb-2">
+        <div class="text-xs text-ink-soft">systemd timer</div>
+        <button type="button" class="icon-btn" data-copy-target="#systemd-timer" aria-label="Copy timer" title="Copy timer"><i class="ti ti-copy"></i></button>
+      </div>
+      <pre id="systemd-timer" class="keep-input-mono text-xs whitespace-pre overflow-x-auto">{{.SystemdTimer}}</pre>
+    </div>
+  </details>
+
+  <a class="keep-btn keep-btn-primary" href="/projects/{{.Project.Slug}}/envs/{{.Env.Slug}}/tokens"><i class="ti ti-check"></i><span>Done</span></a>
+</div>
+{{end}}

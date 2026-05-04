@@ -1,0 +1,29 @@
+{{define "body"}}
+<div class="flex items-center justify-between mb-6">
+  <h1 class="text-base font-medium">Projects</h1>
+  <a class="keep-btn keep-btn-primary" href="/projects/new"><i class="ti ti-plus"></i><span>New project</span></a>
+</div>
+
+{{if .Projects}}
+<table class="keep-table">
+  <thead>
+    <tr><th>Name</th><th>Slug</th><th>Envs</th><th>Secrets</th></tr>
+  </thead>
+  <tbody>
+    {{range .Projects}}
+    <tr>
+      <td><a class="hover:underline" href="/projects/{{.Slug}}">{{.Name}}</a></td>
+      <td class="keep-input-mono text-sm text-ink-soft">{{.Slug}}</td>
+      <td class="text-ink-soft">{{.EnvCount}}</td>
+      <td class="text-ink-soft">{{.SecretCount}}</td>
+    </tr>
+    {{end}}
+  </tbody>
+</table>
+{{else}}
+<div class="border border-line rounded-[2px] p-8 text-center">
+  <p class="text-sm text-ink-soft mb-4">No projects yet.</p>
+  <a class="keep-btn keep-btn-primary" href="/projects/new"><i class="ti ti-plus"></i><span>Create your first project</span></a>
+</div>
+{{end}}
+{{end}}

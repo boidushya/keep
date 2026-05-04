@@ -1,0 +1,3 @@
+{{define "btn"}}
+<button type="{{or .Type "button"}}" class="keep-btn{{if eq .Variant "primary"}} keep-btn-primary{{else if eq .Variant "ghost"}} keep-btn-ghost{{else if eq .Variant "danger"}} keep-btn-danger{{end}}"{{if .Name}} name="{{.Name}}"{{end}}{{if .Value}} value="{{.Value}}"{{end}}>{{.Label}}</button>
+{{end}}

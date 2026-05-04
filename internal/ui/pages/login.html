@@ -1,0 +1,27 @@
+{{define "body"}}
+<div class="max-w-[380px]">
+  <h1 class="text-base font-medium mb-1">Sign in</h1>
+
+  {{if .Error}}
+  <div class="keep-error mb-4">
+    {{.Error}}
+  </div>
+  {{end}}
+
+  <form method="post" action="/login" class="space-y-4">
+    <label class="block">
+      <span class="block text-xs text-ink-soft mb-1">Master password</span>
+      <input class="keep-input keep-input-mono" type="password" name="password" required autofocus>
+    </label>
+    <label class="block">
+      <span class="block text-xs text-ink-soft mb-1">Authenticator code</span>
+      <input class="keep-input keep-input-mono" type="text" name="totp" inputmode="numeric" pattern="[0-9]*" maxlength="8" autocomplete="one-time-code" required>
+    </label>
+    <button class="keep-btn keep-btn-primary" type="submit">Sign in</button>
+  </form>
+
+  <p class="text-xs text-ink-soft mt-4">
+    Lost your authenticator? <a class="underline" href="/login/recovery">Use a recovery code</a>.
+  </p>
+</div>
+{{end}}

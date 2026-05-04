@@ -1,0 +1,6 @@
+{{define "field"}}
+<label class="block">
+  <span class="block text-xs text-ink-soft mb-1">{{.Label}}</span>
+  <input class="keep-input{{if .Mono}} keep-input-mono{{end}}" type="{{or .Type "text"}}" name="{{.Name}}" value="{{.Value}}"{{if .Placeholder}} placeholder="{{.Placeholder}}"{{end}}{{if .Required}} required{{end}}{{if .Autofocus}} autofocus{{end}}>
+</label>
+{{end}}

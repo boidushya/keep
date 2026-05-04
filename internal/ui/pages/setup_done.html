@@ -1,0 +1,47 @@
+{{define "body"}}
+<div class="max-w-[640px]">
+  <h1 class="text-base font-medium mb-1">Confirm your authenticator</h1>
+  <p class="text-sm text-ink-soft mb-5">
+    Scan the QR code below, then enter the 6-digit code from your
+    authenticator app to finish setup. Save the recovery codes somewhere
+    offline before you continue. Recovery codes will not let you skip this
+    step.
+  </p>
+
+  {{if .Error}}
+  <div class="keep-error mb-4">{{.Error}}</div>
+  {{end}}
+
+  <div class="border border-line rounded-[2px] p-4 mb-4">
+    <div class="text-xs text-ink-soft mb-2">Authenticator</div>
+    <div class="flex gap-4 items-start">
+      <img src="data:image/png;base64,{{.QRBase64}}" alt="Authenticator QR" width="180" height="180" class="border border-line rounded-[2px]">
+      <div class="text-sm">
+        <div class="text-xs text-ink-soft">Secret (base32)</div>
+        <code class="block keep-input-mono mt-1 break-all">{{.TOTPSecret}}</code>
+      </div>
+    </div>
+  </div>
+
+  {{if .RecoveryCodes}}
+  <div class="border border-line rounded-[2px] p-4 mb-4">
+    <div class="text-xs text-ink-soft mb-2">Recovery codes</div>
+    <ul class="grid grid-cols-2 gap-x-4 gap-y-1 text-sm keep-input-mono">
+      {{range .RecoveryCodes}}<li>{{.}}</li>{{end}}
+    </ul>
+  </div>
+  {{else}}
+  <div class="border border-line rounded-[2px] p-4 mb-4">
+    <p class="text-xs text-ink-soft">Recovery codes were shown earlier. If you didn't save them, finish this step then regenerate from settings later.</p>
+  </div>
+  {{end}}
+
+  <form method="post" action="/setup/verify" class="border border-line rounded-[2px] p-4 space-y-3">
+    <label class="block">
+      <span class="block text-xs text-ink-soft mb-1">Enter the 6-digit code</span>
+      <input class="keep-input keep-input-mono" type="text" name="totp" inputmode="numeric" pattern="[0-9]*" maxlength="8" autocomplete="one-time-code" required autofocus>
+    </label>
+    <button type="submit" class="keep-btn keep-btn-primary">Confirm and continue</button>
+  </form>
+</div>
+{{end}}

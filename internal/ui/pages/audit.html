@@ -1,0 +1,47 @@
+{{define "body"}}
+<div class="flex items-baseline justify-between mb-4">
+  <h1 class="text-base font-medium flex items-center gap-2"><i class="ti ti-history"></i>Audit log</h1>
+  <a class="text-xs text-ink-soft hover:text-ink inline-flex items-center gap-1" href="/"><i class="ti ti-arrow-left"></i><span>Projects</span></a>
+</div>
+
+<form method="get" action="/audit" class="flex gap-2 items-end mb-4">
+  <label class="block">
+    <span class="block text-xs text-ink-soft mb-1">Action</span>
+    <input class="keep-input keep-input-mono" name="action" value="{{.Filter.Action}}" placeholder="secret. or token.">
+  </label>
+  <label class="block">
+    <span class="block text-xs text-ink-soft mb-1">Actor</span>
+    <input class="keep-input keep-input-mono" name="actor" value="{{.Filter.Actor}}" placeholder="user:1">
+  </label>
+  <button class="keep-btn keep-btn-ghost" type="submit"><i class="ti ti-filter"></i><span>Filter</span></button>
+  {{if or .Filter.Action .Filter.Actor}}<a class="keep-btn keep-btn-ghost" href="/audit"><i class="ti ti-x"></i><span>Clear</span></a>{{end}}
+</form>
+
+{{if .Entries}}
+<table class="keep-table">
+  <thead>
+    <tr><th class="w-32">When</th><th class="w-32">Actor</th><th class="w-48">Action</th><th>Target</th></tr>
+  </thead>
+  <tbody>
+    {{range .Entries}}
+    <tr>
+      <td class="text-ink-soft text-sm">{{.WhenRel}}</td>
+      <td class="keep-input-mono text-sm">{{.Actor}}</td>
+      <td class="keep-input-mono text-sm">{{.Action}}</td>
+      <td class="keep-input-mono text-sm break-all">{{.Target}}</td>
+    </tr>
+    {{end}}
+  </tbody>
+</table>
+
+{{if .NextBeforeID}}
+<div class="mt-4">
+  <a class="keep-btn keep-btn-ghost text-xs" href="/audit?before_id={{.NextBeforeID}}{{if .Filter.Action}}&action={{.Filter.Action}}{{end}}{{if .Filter.Actor}}&actor={{.Filter.Actor}}{{end}}">Older</a>
+</div>
+{{end}}
+{{else}}
+<div class="border border-line rounded-[2px] p-6">
+  <p class="text-sm text-ink-soft">No matching entries.</p>
+</div>
+{{end}}
+{{end}}

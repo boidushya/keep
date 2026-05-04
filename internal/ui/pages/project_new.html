@@ -1,0 +1,25 @@
+{{define "body"}}
+<div class="max-w-[420px]">
+  <h1 class="text-base font-medium mb-4">New project</h1>
+
+  {{if .Error}}
+  <div class="keep-error mb-4">{{.Error}}</div>
+  {{end}}
+
+  <form method="post" action="/projects" class="space-y-4">
+    <label class="block">
+      <span class="block text-xs text-ink-soft mb-1">Slug</span>
+      <input class="keep-input keep-input-mono" type="text" name="slug" pattern="[a-z0-9-]+" required autofocus value="{{.Slug}}">
+      <span class="block text-xs text-ink-faint mt-1">Lowercase letters, digits, hyphens.</span>
+    </label>
+    <label class="block">
+      <span class="block text-xs text-ink-soft mb-1">Name</span>
+      <input class="keep-input" type="text" name="name" required value="{{.Name}}">
+    </label>
+    <div class="flex gap-2">
+      <button class="keep-btn keep-btn-primary" type="submit"><i class="ti ti-check"></i><span>Create</span></button>
+      <a class="keep-btn keep-btn-ghost" href="/"><i class="ti ti-x"></i><span>Cancel</span></a>
+    </div>
+  </form>
+</div>
+{{end}}

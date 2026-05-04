@@ -1,0 +1,27 @@
+{{define "body"}}
+<div class="max-w-[420px]">
+  <h1 class="text-base font-medium mb-1">Set up <span class="keep-wordmark">keep</span></h1>
+  <p class="text-sm text-ink-soft mb-5">
+    Pick a master password. It encrypts everything stored. Lose it and the
+    vault is unrecoverable.
+  </p>
+
+  {{if .Error}}
+  <div class="keep-error mb-4">
+    {{.Error}}
+  </div>
+  {{end}}
+
+  <form method="post" action="/setup" class="space-y-4">
+    <label class="block">
+      <span class="block text-xs text-ink-soft mb-1">Master password</span>
+      <input class="keep-input keep-input-mono" type="password" name="password" required autofocus>
+    </label>
+    <label class="block">
+      <span class="block text-xs text-ink-soft mb-1">Confirm</span>
+      <input class="keep-input keep-input-mono" type="password" name="password_confirm" required>
+    </label>
+    <button class="keep-btn keep-btn-primary" type="submit">Continue</button>
+  </form>
+</div>
+{{end}}

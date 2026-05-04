@@ -1,0 +1,18 @@
+{{define "layout"}}<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{.Title}} · keep</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<link rel="stylesheet" href="/static/keep.css">
+<script src="/static/keep.js" defer></script>
+</head>
+<body class="min-h-screen bg-paper text-ink">
+{{template "header" .}}
+<main class="max-w-[1100px] mx-auto px-4 py-6">
+{{template "body" .}}
+</main>
+</body>
+</html>
+{{end}}

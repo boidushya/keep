@@ -1,0 +1,18 @@
+{{define "header"}}
+<header class="border-b border-line">
+  <div class="max-w-[1100px] mx-auto px-4 h-12 flex items-center justify-between">
+    <a href="/" class="flex items-center gap-1.5 text-sm font-medium tracking-tight keep-wordmark">
+      <i class="ti ti-lock-square-rounded-filled text-base"></i>
+      <span>keep</span>
+    </a>
+    {{if .Session}}
+      <div class="flex items-center gap-3">
+        <a href="/audit" class="icon-btn" aria-label="Audit log" title="Audit log"><i class="ti ti-history"></i></a>
+        <form action="/logout" method="post">
+          <button type="submit" class="icon-btn" aria-label="Sign out" title="Sign out"><i class="ti ti-logout"></i></button>
+        </form>
+      </div>
+    {{end}}
+  </div>
+</header>
+{{end}}

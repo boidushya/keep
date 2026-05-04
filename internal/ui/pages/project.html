@@ -1,0 +1,289 @@
+{{define "body"}}
+<div class="flex items-center justify-between mb-4">
+  <div class="flex items-baseline gap-2">
+    <h1 class="text-base font-medium">{{.Project.Name}}</h1>
+    <code class="keep-input-mono text-xs text-ink-soft">{{.Project.Slug}}</code>
+  </div>
+  <div class="flex gap-2">
+    {{if .Env.ID}}
+    <a
+      class="keep-btn keep-btn-ghost text-xs"
+      href="/projects/{{.Project.Slug}}/envs/{{.Env.Slug}}/tokens"
+    >
+      <i class="ti ti-key"></i><span>Tokens</span>
+    </a>
+    {{end}}
+  </div>
+</div>
+
+{{if .Envs}}
+<div class="border-b border-line mb-4">
+  <nav class="flex gap-1 -mb-px items-center">
+    {{range .Envs}}
+    <a
+      href="/projects/{{$.Project.Slug}}?env={{.Slug}}"
+      title="{{.Slug}}"
+      class="px-3 py-2 text-sm border-b-2 {{if eq .Slug $.Env.Slug}}border-ink text-ink{{else}}border-transparent text-ink-soft hover:text-ink{{end}}"
+      >{{.Name}}</a
+    >
+    {{end}}
+    <details class="relative ml-auto">
+      <summary class="keep-btn keep-btn-ghost text-xs my-1 list-none">
+        <i class="ti ti-plus"></i><span>New env</span>
+      </summary>
+      <form
+        method="post"
+        action="/projects/{{.Project.Slug}}/envs"
+        class="absolute right-0 top-full mt-1 z-10 bg-paper border border-line rounded-[2px] p-3 w-72 space-y-2"
+      >
+        <label class="block">
+          <span class="block text-xs text-ink-soft mb-1">Slug</span>
+          <input
+            class="keep-input keep-input-mono"
+            name="slug"
+            pattern="[a-z0-9-]+"
+            required
+          />
+        </label>
+        <label class="block">
+          <span class="block text-xs text-ink-soft mb-1">Name</span>
+          <input class="keep-input" name="name" required />
+        </label>
+        <button type="submit" class="keep-btn keep-btn-primary text-xs">
+          <i class="ti ti-check"></i><span>Create env</span>
+        </button>
+      </form>
+    </details>
+    {{if .Env.ID}}
+    <details class="relative">
+      <summary
+        class="icon-btn list-none"
+        aria-label="Delete env"
+        title="Delete env"
+      >
+        <i class="ti ti-trash"></i>
+      </summary>
+      <form
+        method="post"
+        action="/projects/{{.Project.Slug}}/envs/{{.Env.Slug}}/delete"
+        class="absolute right-0 top-full mt-1 z-10 bg-paper border border-line rounded-[2px] p-3 w-72 space-y-2"
+      >
+        <p class="text-xs text-ink-soft">
+          Permanently delete <code class="keep-input-mono">{{.Env.Slug}}</code>,
+          all its secrets, and all its tokens. Type the slug to confirm.
+        </p>
+        <input
+          class="keep-input keep-input-mono"
+          name="confirm"
+          pattern="{{.Env.Slug}}"
+          required
+          placeholder="{{.Env.Slug}}"
+        />
+        <button type="submit" class="keep-btn keep-btn-danger text-xs">
+          <i class="ti ti-trash"></i><span>Delete env</span>
+        </button>
+      </form>
+    </details>
+    {{end}}
+  </nav>
+</div>
+{{end}} {{if .Error}}
+<div class="keep-error mb-4">{{.Error}}</div>
+{{end}} {{if not .Envs}}
+<div class="border border-line rounded-[2px] p-8 text-center">
+  <p class="text-sm text-ink-soft mb-4">No envs in this project yet.</p>
+  <details class="inline-block relative">
+    <summary class="keep-btn keep-btn-primary list-none">
+      <i class="ti ti-plus"></i><span>Create first env</span>
+    </summary>
+    <form
+      method="post"
+      action="/projects/{{.Project.Slug}}/envs"
+      class="absolute left-1/2 -translate-x-1/2 top-full mt-2 z-10 bg-paper border border-line rounded-[2px] p-3 w-72 space-y-2 text-left"
+    >
+      <label class="block">
+        <span class="block text-xs text-ink-soft mb-1">Slug</span>
+        <input
+          class="keep-input keep-input-mono"
+          name="slug"
+          pattern="[a-z0-9-]+"
+          required
+          placeholder="prod"
+        />
+      </label>
+      <label class="block">
+        <span class="block text-xs text-ink-soft mb-1">Name</span>
+        <input
+          class="keep-input"
+          name="name"
+          required
+          placeholder="Production"
+        />
+      </label>
+      <button type="submit" class="keep-btn keep-btn-primary text-xs w-full">
+        <i class="ti ti-check"></i><span>Create env</span>
+      </button>
+    </form>
+  </details>
+</div>
+{{else if .Env.ID}}
+<div class="flex items-center justify-between mb-2">
+  <div class="text-xs text-ink-soft">
+    {{len .Secrets}} secret{{if ne (len .Secrets) 1}}s{{end}} in
+    <code class="keep-input-mono">{{.Env.Slug}}</code>
+  </div>
+  {{if .Secrets}}
+  <button
+    type="button"
+    class="text-xs text-ink-soft hover:text-ink flex items-center gap-1"
+    data-reveal-all
+  >
+    <i class="ti ti-eye"></i><span data-label>reveal all</span>
+  </button>
+  {{end}}
+</div>
+
+{{if .Secrets}}
+<table class="keep-table">
+  <thead>
+    <tr>
+      <th class="w-1/3">Key</th>
+      <th>Value</th>
+      <th class="w-16">Ver</th>
+      <th class="w-32">Updated</th>
+      <th class="w-px"></th>
+    </tr>
+  </thead>
+  <tbody>
+    {{range .Secrets}}
+    <tr>
+      <td class="keep-input-mono text-sm align-middle">{{.Key}}</td>
+      <td class="align-middle">
+        <span
+          class="block keep-input-mono text-sm break-all select-none cursor-pointer"
+          data-secret
+          data-value="{{.PlainValue}}"
+          >••••••••</span
+        >
+      </td>
+      <td class="text-ink-soft text-sm">v{{.CurrentVersion}}</td>
+      <td class="text-ink-soft text-sm">{{.UpdatedRel}}</td>
+      <td class="whitespace-nowrap text-right">
+        <button
+          type="button"
+          class="icon-btn"
+          data-copy="{{.PlainValue}}"
+          aria-label="Copy value"
+          title="Copy value"
+        >
+          <i class="ti ti-copy"></i>
+        </button>
+        <a
+          class="icon-btn"
+          href="/projects/{{$.Project.Slug}}/envs/{{$.Env.Slug}}/secrets/{{.Key}}/edit"
+          aria-label="Edit"
+          title="Edit"
+          ><i class="ti ti-edit"></i
+        ></a>
+        <a
+          href="/projects/{{$.Project.Slug}}/envs/{{$.Env.Slug}}/secrets/{{.Key}}/versions"
+          class="icon-btn"
+          aria-label="History"
+          title="History"
+          ><i class="ti ti-history"></i
+        ></a>
+        <form
+          method="post"
+          action="/projects/{{$.Project.Slug}}/envs/{{$.Env.Slug}}/secrets/{{.Key}}"
+          class="inline"
+        >
+          <input type="hidden" name="op" value="delete" />
+          <button
+            type="submit"
+            class="icon-btn"
+            aria-label="Delete"
+            title="Delete"
+          >
+            <i class="ti ti-trash"></i>
+          </button>
+        </form>
+      </td>
+    </tr>
+    {{end}}
+  </tbody>
+</table>
+{{else}}
+<div class="border border-line rounded-[2px] p-8 text-center">
+  <p class="text-sm text-ink-soft mb-1">
+    No secrets in <span class="keep-input-mono">{{.Env.Slug}}</span> yet.
+  </p>
+  <p class="text-xs text-ink-faint">
+    Add one below or paste a <code class="keep-input-mono">.env</code> file.
+  </p>
+</div>
+{{end}}
+
+<div class="relative mt-4 flex gap-2">
+  <details name="secret-input">
+    <summary class="keep-btn keep-btn-ghost text-xs list-none">
+      <i class="ti ti-plus"></i><span>Add secret</span>
+    </summary>
+    <form
+      method="post"
+      action="/projects/{{.Project.Slug}}/envs/{{.Env.Slug}}/secrets"
+      class="absolute left-0 top-full mt-2 z-10 border border-line rounded-[2px] p-4 w-[640px] max-w-full bg-paper space-y-3"
+    >
+      <label class="block">
+        <span class="block text-xs text-ink-soft mb-1">Key</span>
+        <input
+          class="keep-input keep-input-mono"
+          name="key"
+          pattern="[A-Za-z_][A-Za-z0-9_]*"
+          required
+        />
+      </label>
+      <label class="block">
+        <span class="block text-xs text-ink-soft mb-1">Value</span>
+        <textarea
+          class="keep-input keep-input-mono"
+          name="value"
+          rows="3"
+          required
+        ></textarea>
+      </label>
+      <button type="submit" class="keep-btn keep-btn-primary">
+        <i class="ti ti-check"></i><span>Add</span>
+      </button>
+    </form>
+  </details>
+  <details name="secret-input">
+    <summary class="keep-btn keep-btn-ghost text-xs list-none">
+      <i class="ti ti-file-import"></i><span>Bulk import</span>
+    </summary>
+    <form
+      method="post"
+      action="/projects/{{.Project.Slug}}/envs/{{.Env.Slug}}/secrets/bulk"
+      class="absolute left-0 top-full mt-2 z-10 border border-line rounded-[2px] p-4 w-[640px] max-w-full bg-paper space-y-3"
+    >
+      <label class="block">
+        <span class="block text-xs text-ink-soft mb-1">Paste a .env file</span>
+        <textarea
+          class="keep-input keep-input-mono"
+          name="env"
+          rows="10"
+          required
+          placeholder="DATABASE_URL=postgres://...&#10;JWT_SECRET=..."
+        ></textarea>
+        <span class="block text-xs text-ink-faint mt-1"
+          >One <code>KEY=VALUE</code> per line. Blank lines and
+          <code>#</code> comments ignored. Existing keys are updated as new
+          versions.</span
+        >
+      </label>
+      <button type="submit" class="keep-btn keep-btn-primary">
+        <i class="ti ti-file-import"></i><span>Import</span>
+      </button>
+    </form>
+  </details>
+</div>
+{{end}} {{end}}

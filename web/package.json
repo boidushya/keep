@@ -1,0 +1,12 @@
+{
+  "name": "keep-web",
+  "private": true,
+  "scripts": {
+    "build": "tailwindcss -i ./input.css -o ./dist/keep.css --minify",
+    "dev": "tailwindcss -i ./input.css -o ./dist/keep.css --watch"
+  },
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.0.0",
+    "tailwindcss": "^4.0.0"
+  }
+}

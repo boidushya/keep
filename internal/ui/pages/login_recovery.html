@@ -1,0 +1,27 @@
+{{define "body"}}
+<div class="max-w-[380px]">
+  <h1 class="text-base font-medium mb-1">Sign in with a recovery code</h1>
+  <p class="text-sm text-ink-soft mb-5">
+    Each code can be used once. Sign in here, then re-add your authenticator
+    from settings.
+  </p>
+
+  {{if .Error}}
+  <div class="keep-error mb-4">
+    {{.Error}}
+  </div>
+  {{end}}
+
+  <form method="post" action="/login/recovery" class="space-y-4">
+    <label class="block">
+      <span class="block text-xs text-ink-soft mb-1">Master password</span>
+      <input class="keep-input keep-input-mono" type="password" name="password" required autofocus>
+    </label>
+    <label class="block">
+      <span class="block text-xs text-ink-soft mb-1">Recovery code</span>
+      <input class="keep-input keep-input-mono" type="text" name="recovery_code" autocomplete="off" required>
+    </label>
+    <button class="keep-btn keep-btn-primary" type="submit">Sign in</button>
+  </form>
+</div>
+{{end}}

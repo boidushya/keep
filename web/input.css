@@ -1,0 +1,170 @@
+@import url("https://fonts.boidu.dev/css/abc-diatype?tw");
+@import "tailwindcss";
+
+@source "../internal/ui";
+
+@theme {
+  --font-sans: "ABC Diatype", system-ui, sans-serif;
+
+  --color-brand: oklch(0.78 0.17 78);
+
+  --color-accent: oklch(0.66 0.14 145);
+  --color-accent-fg: oklch(0.99 0 0);
+
+  --color-ink: oklch(0.18 0.01 250);
+  --color-ink-soft: oklch(0.42 0.01 250);
+  --color-ink-faint: oklch(0.62 0.01 250);
+  --color-line: oklch(0.9 0.005 250);
+  --color-line-soft: oklch(0.95 0.003 250);
+  --color-paper: oklch(0.99 0 0);
+  --color-paper-soft: oklch(0.97 0.002 250);
+
+  --color-danger: oklch(0.55 0.18 25);
+  --color-danger-fg: oklch(0.45 0.18 25);
+  --color-danger-bg-hover: oklch(0.97 0.02 25);
+
+  --radius: 2px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-ink: oklch(0.94 0.005 250);
+    --color-ink-soft: oklch(0.7 0.01 250);
+    --color-ink-faint: oklch(0.5 0.01 250);
+    --color-line: oklch(0.27 0.008 250);
+    --color-line-soft: oklch(0.22 0.005 250);
+    --color-paper: oklch(0.14 0.005 250);
+    --color-paper-soft: oklch(0.18 0.005 250);
+
+    --color-danger: oklch(0.65 0.18 25);
+    --color-danger-fg: oklch(0.72 0.18 25);
+    --color-danger-bg-hover: oklch(0.22 0.04 25);
+  }
+}
+
+html {
+  font-family: var(--font-sans);
+  color: var(--color-ink);
+  background-color: var(--color-paper);
+  color-scheme: light dark;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+button:not(:disabled),
+summary,
+[role="button"] {
+  user-select: none;
+  cursor: pointer;
+}
+
+.ti {
+  display: inline-block;
+  vertical-align: -0.125em;
+  line-height: 1;
+}
+
+.icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.375rem;
+  color: var(--color-ink-soft);
+  border-radius: var(--radius);
+  font-size: 1rem;
+}
+.icon-btn:hover {
+  color: var(--color-ink);
+  background: var(--color-paper-soft);
+}
+
+@layer components {
+  .keep-wordmark {
+    color: var(--color-brand);
+  }
+
+  .keep-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.375rem 0.75rem;
+    border: 1px solid var(--color-ink);
+    border-radius: var(--radius);
+    background: var(--color-paper);
+    color: var(--color-ink);
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    cursor: pointer;
+  }
+  .keep-btn:hover {
+    background: var(--color-paper-soft);
+  }
+  .keep-btn-primary {
+    background: var(--color-ink);
+    color: var(--color-paper);
+  }
+  .keep-btn-primary:hover {
+    background: var(--color-ink-soft);
+  }
+  .keep-btn-ghost {
+    border-color: var(--color-line);
+  }
+  .keep-btn-ghost:hover {
+    border-color: var(--color-ink-soft);
+  }
+  .keep-btn-danger {
+    border-color: var(--color-danger);
+    color: var(--color-danger-fg);
+  }
+  .keep-btn-danger:hover {
+    background: var(--color-danger-bg-hover);
+  }
+
+  .keep-input {
+    display: block;
+    width: 100%;
+    padding: 0.375rem 0.625rem;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius);
+    background: var(--color-paper);
+    color: var(--color-ink);
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+  }
+  .keep-input:focus {
+    outline: none;
+    border-color: var(--color-ink);
+  }
+  .keep-input-mono {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  }
+
+  .keep-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  .keep-table th,
+  .keep-table td {
+    text-align: left;
+    padding: 0.5rem 0.75rem;
+    border-bottom: 1px solid var(--color-line);
+    vertical-align: middle;
+    font-variant-numeric: tabular-nums;
+  }
+  .keep-table th {
+    font-weight: 500;
+    font-size: 0.75rem;
+    color: var(--color-ink-faint);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .keep-error {
+    border: 1px solid var(--color-danger);
+    background: var(--color-danger-bg-hover);
+    color: var(--color-danger-fg);
+    padding: 0.625rem 0.75rem;
+    border-radius: var(--radius);
+    font-size: 0.875rem;
+  }
+}
