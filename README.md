@@ -20,7 +20,7 @@ make build
 ./keep
 ```
 
-First run walks you through setup at `http://localhost:4339`.
+First run walks you through setup at `http://localhost:4339`. For putting it on a real box (TLS, systemd, agents, backups, recovery), see [SELF_HOSTING.md](SELF_HOSTING.md).
 
 ### Config
 
