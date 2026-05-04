@@ -68,6 +68,8 @@ Group=keep
 Restart=on-failure
 NoNewPrivileges=true
 ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
 ReadWritePaths=/var/lib/keep
 
 [Install]
@@ -94,7 +96,7 @@ HTTP/1.1 503 Service Unavailable
 keep is sealed: operator must log in to unlock
 ```
 
-Practically: after a reboot or `systemctl restart keep`, your agents will fail to pull until you SSH in, confirm the process is up, and log in via the browser once.
+Practically: after a reboot or `systemctl restart keep`, your agents will fail to pull until you log in via the browser once. The apps consuming those env files keep running with whatever was last written to disk, so this is a "secrets stop rolling" problem, not an "everything goes down" problem. Still, add an "open keep, log in, unseal" step to whatever post-reboot checklist you have.
 
 I'd rather have this than stash the unwrap key on disk. If you reboot the box, you re-enter the password once. If reboots are frequent enough that this is annoying, the right answer is `systemd-creds` with TPM2 sealing (not implemented yet, feel free to contribute!).
 
@@ -128,7 +130,7 @@ If the env never lands, look for the obvious things first: token revoked, env or
 Back up the database file (`KEEP_DB_PATH`). That's it.
 
 - Secret values are encrypted at rest. A leaked backup is useless without the master password.
-- Tokens are stored as bcrypt hashes, so a leaked backup doesn't grant API access either.
+- Tokens are stored as sha-256 hashes of 32-byte random values, so a leaked backup doesn't grant API access either.
 - Audit log entries hold metadata only (who touched what when), no values.
 
 Use SQLite's `.backup` (online), or stop the process, copy the file, restart. For one box I just rclone the file to B2 once an hour from a cron. SQLite is small. Don't overthink this.
